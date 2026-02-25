@@ -21,4 +21,6 @@ public class ProdutoController {
     public Page<ProdutoResponseDto> getProdutos(Pageable pageable) {
         return consultaProdutosUseCase.execute(pageable);
     }
+
+
 }
