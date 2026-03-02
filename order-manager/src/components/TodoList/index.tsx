@@ -8,14 +8,15 @@ export const TodoList = ({ pedidos }: { pedidos: PedidoModel[] }) => {
     const pedidosAndamento: PedidoModel[] = pedidos.filter(p => p.status === 'ANDAMENTO');
     const pedidosFinalizado: PedidoModel[] = pedidos.filter(p => p.status === 'FINALIZADO');
 
+    const {ref: dropAguardando} = useDroppable({id: "AGUARDANDO"})
     const {ref: dropAndamento} = useDroppable({id: "ANDAMENTO"})
-    const {ref: dropFinalizacao} = useDroppable({id: "FINALIZACAO"})
+    const {ref: dropFinalizacao} = useDroppable({id: "FINALIZADO"})
 
     return <main className="py-3 grid grid-cols-3 gap-5">
         <section>
-            <div className="w-full h-128 bg-gray-50 rounded-lg">
+            <div className="w-full min-h-128 h-fit bg-gray-50 rounded-lg" ref={dropAguardando}>
                 <div className="h-fit bg-gray-200 p-3 rounded-lg">
-                    <p>⏰ AGUARDANDO (1)</p>
+                    <p>⏰ AGUARDANDO ({pedidosAguardando.length})</p>
                 </div>
                 <div className="h-full py-5">
                     {pedidosAguardando.map(p => (
@@ -25,11 +26,11 @@ export const TodoList = ({ pedidos }: { pedidos: PedidoModel[] }) => {
             </div>
         </section>
         <section>
-            <div className="w-full h-128 bg-gray-50 rounded-lg">
+            <div className="w-full min-h-128 h-fit bg-gray-50 rounded-lg" ref={dropAndamento}>
                 <div className="h-fit bg-gray-200 p-3 rounded-lg">
-                    <p>ANDAMENTO</p>
+                    <p>ANDAMENTO ({pedidosAndamento.length})</p>
                 </div>
-                <div className="h-full py-5" ref={dropAndamento}>
+                <div className="h-full py-5">
                     {pedidosAndamento.map(p => (
                         <Pedido key={p.id} id={p.id} titulo={p.titulo} />
                     ))}
@@ -37,11 +38,11 @@ export const TodoList = ({ pedidos }: { pedidos: PedidoModel[] }) => {
             </div>
         </section>
         <section>
-            <div className="w-full h-128 bg-gray-50 rounded-lg">
+            <div className="w-full min-h-128 h-fit bg-gray-50 rounded-lg" ref={dropFinalizacao}>
                 <div className="h-fit bg-gray-200 p-3 rounded-lg">
-                <p>FINALIZADO</p>
+                <p>FINALIZADO ({pedidosFinalizado.length})</p>
                 </div>
-                <div className="h-full py-5" ref={dropFinalizacao}>
+                <div className="h-full py-5">
                     {pedidosFinalizado.map(p => (
                         <Pedido key={p.id} id={p.id} titulo={p.titulo} />
                     ))}

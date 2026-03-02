@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "pedido")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Getter
 public class Pedido {
 
@@ -22,6 +22,9 @@ public class Pedido {
     private String nome;
     private String telefone;
     private String endereco;
+
+    @Enumerated(EnumType.STRING)
+    private PedidoStatus status;
 
     @ManyToMany
     @JoinTable(name = "pedido_produto",

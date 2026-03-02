@@ -9,10 +9,10 @@ export const usePedidoService = () => {
     }
 
     const alterarStatusPedido = async (form: AlterarStatusPedidoForm): Promise<void> => {
-        await fetch(resourceUrl, {
+        await fetch(`${resourceUrl}/${form.id}`, {
             headers: {"Content-Type": "application/json"},
             method: "PATCH",
-            body: JSON.stringify(form)
+            body: JSON.stringify({ toStatus: form.toStatus })
         });
     }
 

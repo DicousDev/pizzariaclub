@@ -16,16 +16,29 @@ function App() {
   }, [])
 
   const changePedidoStatus = (event: any) => {
-    if(event.canceled) return;
+    if(event.canceled || !event.operation.target?.id) return;
 
     const pedidoId = event.operation.source?.id
-    const payload: AlterarStatusPedidoForm = {id: Number(pedidoId), toStatus: `${event.operation.target?.id}`}
+    const toStatus = `${event.operation.target?.id}`;
+
+    const novaLista: PedidoModel[] = []
+    for(let i = 0; i < pedidos.length; i++) {
+      let ped = pedidos[i];
+      if(ped.id === pedidoId) {
+        ped = { ...ped, status: toStatus }; 
+      }
+
+      novaLista.push(ped);
+    }
+
+    setPedidos(novaLista)
+    const payload: AlterarStatusPedidoForm = {id: Number(pedidoId), toStatus }
     pedidoService.alterarStatusPedido(payload)
+      .then(_ => { pedidoService.getPedidos() })
   }
 
   return (
-
-    <div className="h-dvh bg-orange-600 p-3 flex flex-col">
+    <div className="h-full min-h-dvh bg-orange-600 p-3 flex flex-col">
       <p className="text-2xl text-white font-bold">Pizzaria Club - Order Manager</p>
       <DragDropProvider onDragEnd={changePedidoStatus}>
         <TodoList pedidos={pedidos} />
